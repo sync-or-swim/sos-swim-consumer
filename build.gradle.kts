@@ -23,6 +23,9 @@ dependencies {
     // RabbitMQ client for sending results to our other services
     implementation("com.rabbitmq:amqp-client:5.8.0")
 
+    // A library for parsing command line flags
+    implementation("com.beust:jcommander:1.78")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
