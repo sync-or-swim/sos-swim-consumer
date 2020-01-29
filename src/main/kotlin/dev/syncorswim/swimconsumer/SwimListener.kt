@@ -11,10 +11,16 @@ import javax.naming.InitialContext
 /**
  * Connects to the SWIM message broker and consumes messages.
  *
- * @param properties The application's properties
+ * @param args Command line arguments
+ * @param username The username to authenticate with SWIM
+ * @param password The password to authenticate with SWIM
  * @param destination The queue to output messages to
  */
-class SwimListener(properties: Properties, private var destination: BlockingQueue<String>) : MessageListener {
+class SwimListener(
+        args: Args,
+        username: String,
+        password: String,
+        private var destination: BlockingQueue<String>) : MessageListener {
     private var conn: Connection
 
     init {
@@ -22,18 +28,18 @@ class SwimListener(properties: Properties, private var destination: BlockingQueu
         // standard format that the Solace understands
         val env = Hashtable<String, Any>()
         env[Context.INITIAL_CONTEXT_FACTORY] = "com.solacesystems.jndi.SolJNDIInitialContextFactory"
-        env[Context.PROVIDER_URL] =  properties.getProperty("swim.broker_url")
-        env[Context.SECURITY_PRINCIPAL] = properties.getProperty("swim.username")
-        env[Context.SECURITY_CREDENTIALS] = properties.getProperty("swim.password")
-        env[SupportedProperty.SOLACE_JMS_VPN] = properties.getProperty("swim.vpn")
+        env[Context.PROVIDER_URL] =  args.swimBrokerUrl
+        env[Context.SECURITY_PRINCIPAL] = username
+        env[Context.SECURITY_CREDENTIALS] = password
+        env[SupportedProperty.SOLACE_JMS_VPN] = args.swimVpn
         val context = InitialContext(env)
 
         // Create a new connection
-        val connFactory = context.lookup(properties.getProperty("swim.connection_factory")) as ConnectionFactory
+        val connFactory = context.lookup(args.swimConnectionFactory) as ConnectionFactory
         conn = connFactory.createConnection()
 
         // Start the consumer
-        val queue = context.lookup(properties.getProperty("swim.queue")) as JMSQueue
+        val queue = context.lookup(args.swimQueue) as JMSQueue
         val session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE)
         val consumer = session.createConsumer(queue)
         consumer.messageListener = this
@@ -53,3 +59,11 @@ class SwimListener(properties: Properties, private var destination: BlockingQueu
         }
     }
 }
+
+
+fun bytesMessageToString(message: BytesMessage): String {
+    val content = ByteArray(message.bodyLength.toInt())
+    message.readBytes(content)
+    return String(content)
+}
+

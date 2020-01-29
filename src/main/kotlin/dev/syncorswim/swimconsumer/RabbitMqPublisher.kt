@@ -10,15 +10,15 @@ import java.util.concurrent.BlockingQueue
 /**
  * Reads results from the source queue and publishes them on RabbitMQ.
  */
-class RabbitMqPublisher(properties: Properties, private var source: BlockingQueue<String>) : Thread() {
+class RabbitMqPublisher(args: Args, private var source: BlockingQueue<String>) : Thread() {
     private val conn: Connection
     private val channel: Channel
-    private val queueName = properties.getProperty("rabbitmq.queue_name")
+    private val queueName = args.rabbitMqQueueName
 
     init {
         // Connect to RabbitMQ
         val connFactory = ConnectionFactory()
-        connFactory.setHost(properties.getProperty("rabbitmq.host"))
+        connFactory.setHost(args.rabbitMqHost)
         conn = connFactory.newConnection()
         channel = conn.createChannel()
 

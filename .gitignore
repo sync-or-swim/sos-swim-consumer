@@ -7,3 +7,5 @@ build
 # Ignore wrapper jar
 gradle-wrapper.jar
 
+# Project dictionaries
+/.idea/dictionaries/*.xml
