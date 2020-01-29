@@ -22,4 +22,9 @@ the included Gradle wrapper to run SWIM Consumer.
 
 .. code-block:: bash
 
-    ./gradlew run
+    ./gradlew run {arguments}
+
+
+In addition to the required arguments, you'll need to set the `SWIM_USERNAME`
+and `SWIM_PASSWORD` environment variables to authorize with SWIM.
+
