@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="swim-consumer.main" target="11" />
+      <module name="swim-consumer.test" target="11" />
       <module name="swim-jms-consumer.test" target="11" />
     </bytecodeTargetLevel>
   </component>
