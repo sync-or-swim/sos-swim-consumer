@@ -1,1 +1,1 @@
-rootProject.name = "swim-consumer"
+rootProject.name = "sos-swim-consumer"
