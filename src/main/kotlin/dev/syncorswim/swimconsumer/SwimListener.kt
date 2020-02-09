@@ -50,8 +50,6 @@ class SwimListener(
     }
 
     override fun onMessage(message: Message?) {
-        println("Received message from SWIM")
-
         when (message) {
             is BytesMessage -> destination.add(bytesMessageToString(message))
             is TextMessage -> destination.add(message.text)

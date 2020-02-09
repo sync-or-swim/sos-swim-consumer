@@ -26,11 +26,11 @@ fun main(argv: Array<String>) {
 
     // Load SWIM credentials
     val swimUsername = System.getenv("SWIM_USERNAME")
-    if (swimUsername == null) {
+    if (swimUsername == null || swimUsername == "") {
         exit("SWIM_USERNAME environment variable not set")
     }
     val swimPassword = System.getenv("SWIM_PASSWORD")
-    if (swimPassword == null) {
+    if (swimPassword == null || swimPassword == "") {
         exit("SWIM_PASSWORD environment variable not set")
     }
 
