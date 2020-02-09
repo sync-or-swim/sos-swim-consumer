@@ -11,4 +11,5 @@ FROM openjdk:8-alpine
 
 WORKDIR /sos-swim-consumer
 COPY --from=build /distribution .
-ENTRYPOINT ./bin/sos-swim-consumer
+ENTRYPOINT ["./bin/sos-swim-consumer"]
+
