@@ -11,15 +11,11 @@ import javax.naming.InitialContext
 /**
  * Connects to the SWIM message broker and consumes messages.
  *
- * @param args Command line arguments
- * @param username The username to authenticate with SWIM
- * @param password The password to authenticate with SWIM
+ * @param config The configuration object to consult
  * @param destination The queue to output messages to
  */
 class SwimListener(
-        args: Args,
-        username: String,
-        password: String,
+        config: Configuration,
         private var destination: BlockingQueue<String>) : MessageListener {
     private var conn: Connection
 
@@ -28,18 +24,18 @@ class SwimListener(
         // standard format that the Solace understands
         val env = Hashtable<String, Any>()
         env[Context.INITIAL_CONTEXT_FACTORY] = "com.solacesystems.jndi.SolJNDIInitialContextFactory"
-        env[Context.PROVIDER_URL] =  args.swimBrokerUrl
-        env[Context.SECURITY_PRINCIPAL] = username
-        env[Context.SECURITY_CREDENTIALS] = password
-        env[SupportedProperty.SOLACE_JMS_VPN] = args.swimVpn
+        env[Context.PROVIDER_URL] =  config.swimBrokerUrl
+        env[Context.SECURITY_PRINCIPAL] = config.swimUsername
+        env[Context.SECURITY_CREDENTIALS] = config.swimPassword
+        env[SupportedProperty.SOLACE_JMS_VPN] = config.swimVpn
         val context = InitialContext(env)
 
         // Create a new connection
-        val connFactory = context.lookup(args.swimConnectionFactory) as ConnectionFactory
+        val connFactory = context.lookup(config.swimConnectionFactory) as ConnectionFactory
         conn = connFactory.createConnection()
 
         // Start the consumer
-        val queue = context.lookup(args.swimQueue) as JMSQueue
+        val queue = context.lookup(config.swimQueue) as JMSQueue
         val session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE)
         val consumer = session.createConsumer(queue)
         consumer.messageListener = this

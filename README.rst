@@ -14,17 +14,34 @@ this format, but Solace provides an official Java library for doing so. This
 service uses that library to make messages available on RabbitMQ, which does
 have Python support along with many other languages.
 
-Running
--------
+Building
+--------
 
-Assuming you have a JDK that supports Java 1.8 or newer installed, you can use
-the included Gradle wrapper to run SWIM Consumer.
+This service can be built with Docker using the following command:
 
 .. code-block:: bash
 
-    ./gradlew run {arguments}
+    docker build -t syncorswim/sos-swim-consumer .
 
+Alternatively, assuming you have a JDK that supports Java 1.8 or newer
+installed, you can use Gradle to make a local build.
 
-In addition to the required arguments, you'll need to set the `SWIM_USERNAME`
-and `SWIM_PASSWORD` environment variables to authorize with SWIM.
+.. code-block:: bash
+
+    gradle distTar
+
+Configuration
+-------------
+
+The SWIM Consumer is configured using environment variables.
+
+- ``SWIM_BROKER_URL``: The URL of the SWIM message broker
+- ``SWIM_QUEUE``: The name of the SWIM message queue to get FIXM data from
+- ``SWIM_CONNECTION_FACTORY``: The name of the SWIM connection factory
+- ``SWIM_VPN``: The SWIM message VPN
+- ``RABBITMQ_HOSTNAME``: The hostname (domain name or IP address) of the RabbitMQ
+  server to put FIXM data on
+- ``RABBITMQ_QUEUE_NAME``: The name of the queue to put FIXM data on
+- ``SWIM_USERNAME``: The username to log into SWIM with
+- ``SWIM_PASSWORD``: The password to log into SWIM with
 
