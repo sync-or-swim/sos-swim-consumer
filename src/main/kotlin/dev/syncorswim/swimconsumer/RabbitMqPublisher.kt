@@ -11,18 +11,21 @@ import java.util.logging.Logger
 
 /**
  * Reads results from the source queue and publishes them on RabbitMQ.
+ *
+ * @param config The configuration to consult
+ * @param source The queue to pull FIXM data from
  */
-class RabbitMqPublisher(args: Args, private var source: BlockingQueue<String>) : Thread() {
+class RabbitMqPublisher(config: Configuration, private var source: BlockingQueue<String>) : Thread() {
     private val logger: Logger = Logger.getLogger(javaClass.name)
 
     private var conn: Connection? = null
     private val channel: Channel
-    private val queueName = args.rabbitMqQueueName
+    private val queueName = config.rabbitMqQueueName
 
     init {
         // Connect to RabbitMQ
         val connFactory = ConnectionFactory()
-        connFactory.host = args.rabbitMqHost
+        connFactory.host = config.rabbitMqHost
 
         while (conn == null) {
             try {
