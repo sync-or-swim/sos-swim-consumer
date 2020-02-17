@@ -1,8 +1,8 @@
-FROM openjdk:8 AS build
+FROM gradle:6.1.1-jdk13 AS build
 
 WORKDIR /sos-swim-consumer
 COPY . .
-RUN ./gradlew distTar
+RUN gradle distTar
 
 WORKDIR /distribution
 RUN tar --extract --strip-components=1 --file /sos-swim-consumer/build/distributions/sos-swim-consumer.tar

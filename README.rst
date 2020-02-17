@@ -21,14 +21,14 @@ This service can be built with Docker using the following command:
 
 .. code-block:: bash
 
-    docker build -t sync-or-swim/sos-swim-consumer .
+    docker build -t syncorswim/sos-swim-consumer .
 
 Alternatively, assuming you have a JDK that supports Java 1.8 or newer
-installed, you can use the included Gradle wrapper to make a local build.
+installed, you can use Gradle to make a local build.
 
 .. code-block:: bash
 
-    ./gradlew distTar
+    gradle distTar
 
 Configuration
 -------------
